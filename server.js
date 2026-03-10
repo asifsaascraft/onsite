@@ -12,7 +12,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import userAuthRoutes from "./routes/userAuthRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import moduleRoutes from "./routes/moduleRoutes.js";
-
+import registerRoutes from "./routes/registerRoutes.js";
 const app = express();
 
 // =======================
@@ -66,6 +66,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/users", userAuthRoutes);
 app.use("/api", userRoutes);
 app.use("/api", moduleRoutes);
+app.use("/api", registerRoutes);
 
 
 // =======================
