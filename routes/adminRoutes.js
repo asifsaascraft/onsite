@@ -21,7 +21,7 @@ router.use(cookieParser());
 // Auth
 router.post("/register", registerAdmin); // used only once
 router.post("/login", loginAdmin);
-router.get("/refresh-token", refreshAccessToken);
+router.post("/refresh-token", refreshAccessToken);
 router.post("/logout", protectAdmin, logoutAdmin);
 
 
