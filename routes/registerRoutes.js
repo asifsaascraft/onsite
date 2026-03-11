@@ -4,28 +4,31 @@ import {
   searchRegisters,
   getAllRegisters,
   getRegisterById,
+  printRegister,
   deleteRegister,
 } from "../controllers/registerController.js";
 
 import { protectAdmin } from "../middlewares/adminAuth.js";
+import { protectAdminOrUser } from "../middlewares/authAny.js";
 
 const router = express.Router();
 
-router.use(protectAdmin);
+// Create Register -> Admin only
+router.post("/registers", protectAdmin, createRegister);
 
-// Create Register
-router.post("/registers", createRegister);
+// Search Registers -> Admin or User
+router.post("/registers/search", protectAdminOrUser, searchRegisters);
 
-// Search Registers
-router.post("/registers/search", searchRegisters);
+// Get All Registers -> Admin or User
+router.get("/registers", protectAdminOrUser, getAllRegisters);
 
-// Get All Registers
-router.get("/registers", getAllRegisters);
+// Get Single Register -> Admin or User
+router.get("/registers/:id", protectAdminOrUser, getRegisterById);
 
-// Get Single Register
-router.get("/registers/:id", getRegisterById);
+// Print Register -> Admin or User
+router.patch("/registers/:id/print", protectAdminOrUser, printRegister);
 
-// Delete Register
-router.delete("/registers/:id", deleteRegister);
+// Delete Register -> Admin only
+router.delete("/registers/:id", protectAdmin, deleteRegister);
 
 export default router;

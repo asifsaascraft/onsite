@@ -17,7 +17,7 @@ const generateRegNum = () => {
 };
 
 /* ======================================================
-   Create Register
+   Create Register (Admin only)
 ====================================================== */
 export const createRegister = async (req, res) => {
   try {
@@ -74,7 +74,7 @@ export const createRegister = async (req, res) => {
 };
 
 /* ======================================================
-   Get All Registers
+   Get All Registers (Admin or User)
 ====================================================== */
 export const getAllRegisters = async (req, res) => {
   try {
@@ -96,7 +96,7 @@ export const getAllRegisters = async (req, res) => {
 };
 
 /* ======================================================
-   Get Register By ID
+   Get Register By ID (Admin or User)
 ====================================================== */
 export const getRegisterById = async (req, res) => {
   try {
@@ -134,7 +134,7 @@ export const getRegisterById = async (req, res) => {
 };
 
 /* ======================================================
-   Delete Register
+   Delete Register (Admin only)
 ====================================================== */
 export const deleteRegister = async (req, res) => {
   try {
@@ -171,7 +171,7 @@ export const deleteRegister = async (req, res) => {
 };
 
 /* ======================================================
-   Search Registers (name / mobile / regNum) - POST
+   Search Registers (name / mobile / regNum) - POST (Admin or User)
 ====================================================== */
 export const searchRegisters = async (req, res) => {
   try {
@@ -199,6 +199,46 @@ export const searchRegisters = async (req, res) => {
       success: true,
       count: registers.length,
       data: registers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+/* ======================================================
+   Mark Register as Printed (Admin or User)
+====================================================== */
+export const printRegister = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid register ID",
+      });
+    }
+
+    const register = await Register.findById(id);
+
+    if (!register) {
+      return res.status(404).json({
+        success: false,
+        message: "Register not found",
+      });
+    }
+
+    register.isPrinted = true;
+
+    await register.save();
+
+    res.json({
+      success: true,
+      message: "Register marked as printed",
+      data: register,
     });
   } catch (error) {
     res.status(500).json({

@@ -26,6 +26,11 @@ const RegisterSchema = new mongoose.Schema(
       unique: true,
     },
 
+    isPrinted: {
+      type: Boolean,
+      default: false,
+    },
+
     //  Multiple Module IDs
     modules: [
       {
