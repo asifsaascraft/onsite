@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createRegister,
+  searchRegisters,
   getAllRegisters,
   getRegisterById,
   deleteRegister,
@@ -14,6 +15,9 @@ router.use(protectAdmin);
 
 // Create Register
 router.post("/registers", createRegister);
+
+// Search Registers
+router.get("/registers/search", searchRegisters);
 
 // Get All Registers
 router.get("/registers", getAllRegisters);

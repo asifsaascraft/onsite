@@ -169,3 +169,41 @@ export const deleteRegister = async (req, res) => {
     });
   }
 };
+
+/* ======================================================
+   Search Registers (name / mobile / regNum)
+====================================================== */
+export const searchRegisters = async (req, res) => {
+  try {
+    const { name, mobile, regNum } = req.query;
+
+    let filter = {};
+
+    if (name) {
+      filter.name = { $regex: name, $options: "i" }; // case insensitive
+    }
+
+    if (mobile) {
+      filter.mobile = { $regex: mobile, $options: "i" };
+    }
+
+    if (regNum) {
+      filter.regNum = regNum.toUpperCase();
+    }
+
+    const registers = await Register.find(filter)
+      .populate("modules", "moduleName status")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      count: registers.length,
+      data: registers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
