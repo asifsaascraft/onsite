@@ -179,6 +179,15 @@ export const searchRegisters = async (req, res) => {
 
     let filter = {};
 
+    /*  prevent returning all records */
+    if (!name && !mobile && !regNum) {
+      return res.json({
+        success: true,
+        count: 0,
+        data: [],
+      });
+    }
+
     if (name) {
       filter.name = { $regex: name, $options: "i" };
     }
