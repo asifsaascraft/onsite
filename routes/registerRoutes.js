@@ -17,7 +17,7 @@ router.use(protectAdmin);
 router.post("/registers", createRegister);
 
 // Search Registers
-router.get("/registers/search", searchRegisters);
+router.post("/registers/search", searchRegisters);
 
 // Get All Registers
 router.get("/registers", getAllRegisters);

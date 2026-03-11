@@ -171,16 +171,16 @@ export const deleteRegister = async (req, res) => {
 };
 
 /* ======================================================
-   Search Registers (name / mobile / regNum)
+   Search Registers (name / mobile / regNum) - POST
 ====================================================== */
 export const searchRegisters = async (req, res) => {
   try {
-    const { name, mobile, regNum } = req.query;
+    const { name, mobile, regNum } = req.body;
 
     let filter = {};
 
     if (name) {
-      filter.name = { $regex: name, $options: "i" }; // case insensitive
+      filter.name = { $regex: name, $options: "i" };
     }
 
     if (mobile) {
