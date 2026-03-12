@@ -13,6 +13,8 @@ import userAuthRoutes from "./routes/userAuthRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import moduleRoutes from "./routes/moduleRoutes.js";
 import registerRoutes from "./routes/registerRoutes.js";
+import scanRoutes from "./routes/scanRoutes.js";
+
 const app = express();
 
 // =======================
@@ -77,6 +79,8 @@ app.use("/api/modules", moduleRoutes);
 // Registers
 app.use("/api/registers", registerRoutes);
 
+// Scanning
+app.use("/api/scans", scanRoutes);
 
 // =======================
 // Start Server SAFELY
