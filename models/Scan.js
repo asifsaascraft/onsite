@@ -8,6 +8,12 @@ const ScanSchema = new mongoose.Schema(
       required: true,
     },
 
+    registerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Register",
+      required: true,
+    },
+
     regNum: {
       type: String,
       required: [true, "Reg Number is required"],

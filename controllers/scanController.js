@@ -50,7 +50,7 @@ export const scanRegister = async (req, res) => {
     if (!register.modules.includes(moduleId)) {
       return res.status(400).json({
         success: false,
-        message: "This register is not assigned to this module",
+        message: "This registration number is not allowed",
       });
     }
 
@@ -63,21 +63,29 @@ export const scanRegister = async (req, res) => {
     if (existingScan) {
       return res.status(400).json({
         success: false,
-        message: "Already scanned for this module",
+        message: "This registration number is already scanned",
       });
     }
 
+    /* create scan */
     const scan = await Scan.create({
-      regNum: regNum.toUpperCase(),
       moduleId,
+      registerId: register._id,
+      regNum: regNum.toUpperCase(),
       isScanned: true,
     });
 
+    /* populate after creation */
+    const populatedScan = await Scan.findById(scan._id)
+      .populate("moduleId", "moduleName status")
+      .populate("registerId", "name mobile regNum note");
+
     res.status(201).json({
       success: true,
-      message: "Scan successful",
-      data: scan,
+      message: "Successfully scanned",
+      data: populatedScan,
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -91,8 +99,10 @@ export const scanRegister = async (req, res) => {
 ====================================================== */
 export const getAllScans = async (req, res) => {
   try {
+
     const scans = await Scan.find()
       .populate("moduleId", "moduleName status")
+      .populate("registerId", "name mobile regNum note")
       .sort({ createdAt: -1 });
 
     res.json({
@@ -100,6 +110,7 @@ export const getAllScans = async (req, res) => {
       count: scans.length,
       data: scans,
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -108,11 +119,13 @@ export const getAllScans = async (req, res) => {
   }
 };
 
+
 /* ======================================================
    Get All Scans By Module
 ====================================================== */
 export const getScansByModule = async (req, res) => {
   try {
+
     const { moduleId } = req.params;
 
     // validate moduleId
@@ -136,6 +149,7 @@ export const getScansByModule = async (req, res) => {
     // find scans
     const scans = await Scan.find({ moduleId })
       .populate("moduleId", "moduleName status")
+      .populate("registerId", "name mobile regNum note")
       .sort({ createdAt: -1 });
 
     res.json({
