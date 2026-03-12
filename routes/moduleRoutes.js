@@ -17,21 +17,21 @@ const router = express.Router();
 
 
 // Create ( ADMIN ONLY )
-router.post("/modules", protectAdmin, createModule);
+router.post("/", protectAdmin, createModule);
 
 // Get all ( ADMIN ONLY )
-router.get("/modules", protectAdmin, getAllModules);
+router.get("/", protectAdmin, getAllModules);
 
 // Get all active ( BOTH )
-router.get("/modules/active", protectAdminOrUser, getAllActiveModules);
+router.get("/active", protectAdminOrUser, getAllActiveModules);
 
 // Get single ( BOTH )
-router.get("/modules/:id", protectAdminOrUser, getModuleById);
+router.get("/:id", protectAdminOrUser, getModuleById);
 
 // Update ( ADMIN ONLY )
-router.put("/modules/:id", protectAdmin, updateModule);
+router.put("/:id", protectAdmin, updateModule);
 
 // Delete ( ADMIN ONLY )
-router.delete("/modules/:id", protectAdmin, deleteModule);
+router.delete("/:id", protectAdmin, deleteModule);
 
 export default router;

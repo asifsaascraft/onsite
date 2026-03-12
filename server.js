@@ -62,11 +62,20 @@ app.get("/", (req, res) => {
 // =======================
 // API Routes
 // =======================
+// Admin routes
 app.use("/api/admin", adminRoutes);
-app.use("/api/users", userAuthRoutes);
-app.use("/api", userRoutes);
-app.use("/api", moduleRoutes);
-app.use("/api", registerRoutes);
+
+// User auth routes
+app.use("/api/user-auth", userAuthRoutes);
+
+// Admin manage users
+app.use("/api/admin", userRoutes);
+
+// Modules
+app.use("/api/modules", moduleRoutes);
+
+// Registers
+app.use("/api/registers", registerRoutes);
 
 
 // =======================
