@@ -54,16 +54,19 @@ export const scanRegister = async (req, res) => {
       });
     }
 
-    /* check if already scanned */
+    //* check if already scanned */
     const existingScan = await Scan.findOne({
       regNum: regNum.toUpperCase(),
       moduleId,
-    });
+    })
+      .populate("moduleId", "moduleName status")
+      .populate("registerId", "name mobile regNum note");
 
     if (existingScan) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: "This registration number is already scanned",
+        data: existingScan,
       });
     }
 
@@ -85,7 +88,6 @@ export const scanRegister = async (req, res) => {
       message: "Successfully scanned",
       data: populatedScan,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -99,7 +101,6 @@ export const scanRegister = async (req, res) => {
 ====================================================== */
 export const getAllScans = async (req, res) => {
   try {
-
     const scans = await Scan.find()
       .populate("moduleId", "moduleName status")
       .populate("registerId", "name mobile regNum note")
@@ -110,7 +111,6 @@ export const getAllScans = async (req, res) => {
       count: scans.length,
       data: scans,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -119,13 +119,11 @@ export const getAllScans = async (req, res) => {
   }
 };
 
-
 /* ======================================================
    Get All Scans By Module
 ====================================================== */
 export const getScansByModule = async (req, res) => {
   try {
-
     const { moduleId } = req.params;
 
     // validate moduleId
@@ -158,7 +156,6 @@ export const getScansByModule = async (req, res) => {
       count: scans.length,
       data: scans,
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
