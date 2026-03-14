@@ -23,14 +23,13 @@ export const createRegister = async (req, res) => {
   try {
     const { name, mobile, note, modules } = req.body;
 
-    if (!name || !mobile || !note || !modules || modules.length === 0) {
+    if (!name || !note || !modules || modules.length === 0) {
       return res.status(400).json({
         success: false,
-        message: "name, mobile, note and modules are required",
+        message: "name, note and modules are required",
       });
     }
 
-    // validate modules exist
     const moduleExists = await Module.find({
       _id: { $in: modules },
     });
@@ -42,7 +41,6 @@ export const createRegister = async (req, res) => {
       });
     }
 
-    // generate unique reg number
     let regNum;
     let exists = true;
 
@@ -54,10 +52,10 @@ export const createRegister = async (req, res) => {
 
     const register = await Register.create({
       name,
-      mobile,
       note,
       modules,
       regNum,
+      ...(mobile && { mobile }),
     });
 
     res.status(201).json({
@@ -65,6 +63,7 @@ export const createRegister = async (req, res) => {
       message: "Register created successfully",
       data: register,
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,

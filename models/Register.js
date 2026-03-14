@@ -10,7 +10,6 @@ const RegisterSchema = new mongoose.Schema(
 
     mobile: {
       type: String,
-      required: [true, "Mobile is required"],
       trim: true,
     },
 
